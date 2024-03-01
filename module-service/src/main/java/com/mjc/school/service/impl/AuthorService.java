@@ -4,6 +4,7 @@ import com.mjc.school.repository.BaseRepository;
 import com.mjc.school.repository.model.AuthorModel;
 import com.mjc.school.service.BaseService;
 import com.mjc.school.service.annotation.ValidatingAuthor;
+import com.mjc.school.service.annotation.ValidatingAuthorId;
 import com.mjc.school.service.dto.AuthorDtoRequest;
 import com.mjc.school.service.dto.AuthorDtoResponse;
 import com.mjc.school.service.errorsexceptions.Errors;
@@ -27,6 +28,7 @@ public class AuthorService implements BaseService<AuthorDtoRequest, AuthorDtoRes
         return MyMapper.INSTANCE.authorModelListToauthorDtoList(authorRepository.readAll());
     }
 
+    @ValidatingAuthorId
     @Override
     public AuthorDtoResponse readById(Long id) {
         return authorRepository.readById(id)
@@ -44,12 +46,20 @@ public class AuthorService implements BaseService<AuthorDtoRequest, AuthorDtoRes
     @ValidatingAuthor
     @Override
     public AuthorDtoResponse update(AuthorDtoRequest updateRequest) {
-        AuthorModel authorModel = authorRepository.update(MyMapper.INSTANCE.authorDtoToAuthorModel(updateRequest));
-        return MyMapper.INSTANCE.authorModelToAuthorDto(authorModel);
+        if (readById(updateRequest.getId())!=null) {
+            AuthorModel authorModel = authorRepository.update(MyMapper.INSTANCE.authorDtoToAuthorModel(updateRequest));
+            return MyMapper.INSTANCE.authorModelToAuthorDto(authorModel);
+        }
+        return null;
     }
 
+    @ValidatingAuthorId
     @Override
     public boolean deleteById(Long id) {
-        return authorRepository.deleteById(id);
+        if (readById(id)!=null) {
+            return authorRepository.deleteById(id);
+        } else {
+            return false;
+        }
     }
 }

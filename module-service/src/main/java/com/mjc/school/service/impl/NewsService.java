@@ -1,9 +1,11 @@
 package com.mjc.school.service.impl;
 
 import com.mjc.school.repository.BaseRepository;
+import com.mjc.school.repository.model.AuthorModel;
 import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.service.BaseService;
 import com.mjc.school.service.annotation.ValidatingNews;
+import com.mjc.school.service.annotation.ValidatingNewsId;
 import com.mjc.school.service.dto.NewsDtoRequest;
 import com.mjc.school.service.dto.NewsDtoResponse;
 import com.mjc.school.service.errorsexceptions.Errors;
@@ -12,14 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class NewsService implements BaseService<NewsDtoRequest, NewsDtoResponse, Long> {
     private final BaseRepository<NewsModel, Long> newsRepository;
+    private final BaseRepository<AuthorModel, Long> authorRepository;
 
     @Autowired
-    public NewsService(BaseRepository<NewsModel, Long> newsRepository) {
+    public NewsService(BaseRepository<NewsModel, Long> newsRepository,
+                       BaseRepository<AuthorModel, Long> authorRepository) {
         this.newsRepository = newsRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -27,6 +33,7 @@ public class NewsService implements BaseService<NewsDtoRequest, NewsDtoResponse,
         return MyMapper.INSTANCE.newsModelListToNewsDtoList(newsRepository.readAll());
     }
 
+    @ValidatingNewsId
     @Override
     public NewsDtoResponse readById(Long id) {
         return newsRepository.readById(id)
@@ -37,19 +44,35 @@ public class NewsService implements BaseService<NewsDtoRequest, NewsDtoResponse,
     @ValidatingNews
     @Override
     public NewsDtoResponse create(NewsDtoRequest createRequest) {
-        NewsModel newsModel = newsRepository.create(MyMapper.INSTANCE.newsDtoToNewsModel(createRequest));
-        return MyMapper.INSTANCE.newsModelToNewsDto(newsModel);
+        for (AuthorModel authorModel: authorRepository.readAll()) {
+            if (Objects.equals(createRequest.getAuthorId(), authorModel.getId())) {
+                NewsModel newsModel = newsRepository.create(MyMapper.INSTANCE.newsDtoToNewsModel(createRequest));
+                return MyMapper.INSTANCE.newsModelToNewsDto(newsModel);
+            }
+        }
+        return null;
     }
 
     @ValidatingNews
     @Override
     public NewsDtoResponse update(NewsDtoRequest updateRequest) {
-        NewsModel newsModel = newsRepository.update(MyMapper.INSTANCE.newsDtoToNewsModel(updateRequest));
-        return MyMapper.INSTANCE.newsModelToNewsDto(newsModel);
+        for (AuthorModel authorModel: authorRepository.readAll()) {
+            if (Objects.equals(updateRequest.getAuthorId(), authorModel.getId())
+                    && readById(updateRequest.getId())!=null) {
+                NewsModel newsModel = newsRepository.update(MyMapper.INSTANCE.newsDtoToNewsModel(updateRequest));
+                return MyMapper.INSTANCE.newsModelToNewsDto(newsModel);
+            }
+        }
+        return null;
     }
 
+    @ValidatingNewsId
     @Override
     public boolean deleteById(Long id) {
-        return newsRepository.deleteById(id);
+        if (readById(id)!=null) {
+            return newsRepository.deleteById(id);
+        } else {
+            return false;
+        }
     }
 }

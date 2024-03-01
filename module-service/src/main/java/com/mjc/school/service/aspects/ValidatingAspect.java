@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class ValidatingAspect {
     private final Validator validator;
 
+    @Autowired
     public ValidatingAspect(Validator validator) {
         this.validator = validator;
     }
@@ -27,13 +28,13 @@ public class ValidatingAspect {
         validator.validateAuthorDtoRequest(authorDtoRequest);
     }
 
-    @Before("@annotation(com.mjc.school.service.annotation.ValidatingNewsId) && args(newsId)")
-    public void validateReadNewsId(String newsId) {
-        validator.validateNewsId(newsId);
+    @Before("@annotation(com.mjc.school.service.annotation.ValidatingNewsId) && args(id)")
+    public void validateNewsDtoId(Long id) {
+        validator.validateNewsId(id);
     }
 
-    @Before("@annotation(com.mjc.school.service.annotation.ValidatingAuthorId) && args(authorId)")
-    public void validateReadAuthorId(String authorId) {
-        validator.validateAuthorId(authorId);
+    @Before("@annotation(com.mjc.school.service.annotation.ValidatingAuthorId) && args(id)")
+    public void validateAuthorDtoId(Long id) {
+        validator.validateAuthorId(id);
     }
 }

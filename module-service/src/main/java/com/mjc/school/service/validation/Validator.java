@@ -6,6 +6,7 @@ import com.mjc.school.service.errorsexceptions.Errors;
 import com.mjc.school.service.errorsexceptions.ValidatorException;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class Validator {
     private static final int NEWS_TITLE_MIN = 5;
@@ -16,23 +17,18 @@ public class Validator {
     private static final int AUTHOR_NAME_MAX = 15;
 
     public void validateNewsDtoRequest(NewsDtoRequest newsDtoRequest) {
-        validateNewsId(String.valueOf(newsDtoRequest.getId()));
         validateNewsTitle(newsDtoRequest.getTitle());
         validateNewsContent(newsDtoRequest.getContent());
-        validateNewsAuthorId(String.valueOf(newsDtoRequest.getAuthorId()));
+        validateNewsAuthorId(newsDtoRequest.getAuthorId());
     }
 
     public void validateAuthorDtoRequest(AuthorDtoRequest authorDtoRequest) {
-        validateAuthorId(String.valueOf(authorDtoRequest.getId()));
         validateAuthorName(authorDtoRequest.getName());
     }
 
-    public void validateNewsId(String newsId) {
-        if (!validateId(newsId)) {
-            throw new ValidatorException(Errors.ERROR_NEWS_ID_FORMAT.getErrorData("", false));
-        }
-        if (newsId==null || Long.parseLong(newsId)<1) {
-            throw new ValidatorException(Errors.ERROR_NEWS_ID_VALUE.getErrorData(newsId, false));
+    public void validateNewsId(Long newsId) {
+        if (newsId==null || newsId<1) {
+            throw new ValidatorException(Errors.ERROR_NEWS_ID_VALUE.getErrorData(String.valueOf(newsId), false));
         }
     }
 
@@ -48,21 +44,15 @@ public class Validator {
         }
     }
 
-    private void validateNewsAuthorId(String newsAuthorId) {
-        if (!validateId(newsAuthorId)) {
-            throw new ValidatorException(Errors.ERROR_NEWS_AUTHOR_ID_FORMAT.getErrorData("", false));
-        }
-        if (newsAuthorId==null || Long.parseLong(newsAuthorId)<1) {
-            throw new ValidatorException(Errors.ERROR_NEWS_AUTHOR_ID_VALUE.getErrorData(newsAuthorId, false));
+    private void validateNewsAuthorId(Long newsAuthorId) {
+        if (newsAuthorId==null || newsAuthorId<1) {
+            throw new ValidatorException(Errors.ERROR_NEWS_AUTHOR_ID_VALUE.getErrorData(String.valueOf(newsAuthorId), false));
         }
     }
 
-    public void validateAuthorId(String authorId) {
-        if (!validateId(authorId)) {
-            throw new ValidatorException(Errors.ERROR_AUTHOR_ID_FORMAT.getErrorData("", false));
-        }
-        if (authorId==null || Long.parseLong(authorId)<1) {
-            throw new ValidatorException(Errors.ERROR_AUTHOR_ID_VALUE.getErrorData(authorId, false));
+    public void validateAuthorId(Long authorId) {
+        if (authorId==null || authorId<1) {
+            throw new ValidatorException(Errors.ERROR_AUTHOR_ID_VALUE.getErrorData(String.valueOf(authorId), false));
         }
     }
 
@@ -72,7 +62,7 @@ public class Validator {
         }
     }
 
-    private boolean validateId(String id) {
+    public boolean validateId(String id) {
         char[] chars = id.toCharArray();
         int counter=0;
         if (chars[0]=='-') {

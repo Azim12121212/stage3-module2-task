@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -52,8 +53,15 @@ public class AuthorRepository implements BaseRepository<AuthorModel, Long> {
     @Override
     public AuthorModel update(AuthorModel entity) {
         LocalDateTime dateTime = LocalDateTime.parse(LocalDateTime.now().format(MY_FORMAT));
-        if (readById(entity.getId()).isPresent()) {
-            int index = readAll().indexOf(entity);
+
+        int index = -1;
+        for (AuthorModel authorModel: readAll()) {
+            if (Objects.equals(entity.getId(), authorModel.getId())) {
+                index = readAll().indexOf(authorModel);
+            }
+        }
+
+        if (index>=0) {
             readAll().get(index).setName(entity.getName());
             readAll().get(index).setLastUpdateDate(dateTime);
             return readAll().get(index);

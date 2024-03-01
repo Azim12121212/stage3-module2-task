@@ -1,9 +1,7 @@
 package com.mjc.school.controller.impl;
 
 import com.mjc.school.controller.BaseController;
-import com.mjc.school.controller.annotation.CommandHandler;
 import com.mjc.school.service.BaseService;
-import com.mjc.school.service.annotation.ValidatingNewsId;
 import com.mjc.school.service.dto.NewsDtoRequest;
 import com.mjc.school.service.dto.NewsDtoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ public class NewsController implements BaseController<NewsDtoRequest, NewsDtoRes
         this.newsService = newsService;
     }
 
-    @CommandHandler("getAllNewsOptions")
     @Override
     public List<NewsDtoResponse> readAll() {
         return newsService.readAll();
