@@ -14,9 +14,9 @@ import java.util.Random;
 @Component
 public class DataSource {
     private static final int MAX_AMOUNT_OF_NEWS = 20;
-    private final String AUTHOR_PATH = "module-repository/src/main/resources/authors";
-    private final String CONTENT_PATH = "module-repository/src/main/resources/content";
-    private final String NEWS_PATH = "module-repository/src/main/resources/news";
+    private final String AUTHOR_PATH = "src/main/resources/authors";
+    private final String CONTENT_PATH = "src/main/resources/content";
+    private final String NEWS_PATH = "src/main/resources/news";
 
     private List<AuthorModel> authorModelList;
     private List<NewsModel> newsModelList;
