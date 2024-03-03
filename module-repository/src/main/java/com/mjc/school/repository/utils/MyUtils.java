@@ -1,13 +1,11 @@
 package com.mjc.school.repository.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.Year;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class MyUtils {
     private static Random rand = new Random();
@@ -24,17 +22,14 @@ public class MyUtils {
      * @return List
      */
     public static List<String> getTextListFromFile(String filepath) {
-        List<String> textList = new ArrayList<>();
-        File file = new File(filepath);
         try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                textList.add(scanner.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("FileNotFoundException: getTextListFromFile");
+            InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(filepath);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            return bufferedReader.lines().toList();
+        } catch (Exception e) {
+            System.out.println("Exception: getTextListFromFile");
         }
-        return textList;
+        return null;
     }
 
     /**
