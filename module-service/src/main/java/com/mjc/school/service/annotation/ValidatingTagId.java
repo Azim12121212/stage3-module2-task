@@ -1,4 +1,4 @@
-package com.mjc.school.repository.annotation;
+package com.mjc.school.service.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface OnDelete {
+public @interface ValidatingTagId {
 }

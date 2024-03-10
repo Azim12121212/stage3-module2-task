@@ -1,6 +1,7 @@
 package com.mjc.school.service.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class AuthorDtoResponse {
@@ -8,6 +9,7 @@ public class AuthorDtoResponse {
     private String name;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
+    private List<NewsDtoResponse> newsDtoResponseList;
 
     public AuthorDtoResponse() {
     }
@@ -16,11 +18,13 @@ public class AuthorDtoResponse {
         this.name = name;
     }
 
-    public AuthorDtoResponse(Long id, String name, LocalDateTime createDate, LocalDateTime lastUpdateDate) {
+    public AuthorDtoResponse(Long id, String name, LocalDateTime createDate,
+                             LocalDateTime lastUpdateDate, List<NewsDtoResponse> newsDtoResponseList) {
         this.id = id;
         this.name = name;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
+        this.newsDtoResponseList = newsDtoResponseList;
     }
 
     public Long getId() {
@@ -53,6 +57,14 @@ public class AuthorDtoResponse {
 
     public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public List<NewsDtoResponse> getNewsDtoResponseList() {
+        return newsDtoResponseList;
+    }
+
+    public void setNewsDtoResponseList(List<NewsDtoResponse> newsDtoResponseList) {
+        this.newsDtoResponseList = newsDtoResponseList;
     }
 
     @Override

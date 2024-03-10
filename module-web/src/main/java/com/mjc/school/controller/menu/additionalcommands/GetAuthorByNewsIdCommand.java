@@ -1,6 +1,7 @@
-package com.mjc.school.controller.menu.newscommands;
+package com.mjc.school.controller.menu.additionalcommands;
 
 import com.mjc.school.controller.BaseController;
+import com.mjc.school.controller.impl.NewsController;
 import com.mjc.school.controller.menu.MenuOptions;
 import com.mjc.school.controller.menuinterface.MenuCommands;
 import com.mjc.school.service.dto.NewsDtoRequest;
@@ -17,18 +18,18 @@ import static com.mjc.school.controller.menu.MenuInputTexts.ENTER_NEWS_ID;
 import static com.mjc.school.controller.menu.MenuInputTexts.OPERATION;
 
 @Component
-public class RemoveNewsByIdCommand implements MenuCommands {
+public class GetAuthorByNewsIdCommand implements MenuCommands {
     private final BaseController<NewsDtoRequest, NewsDtoResponse, Long> newsController;
     private final Scanner scanner;
 
-    public RemoveNewsByIdCommand(BaseController<NewsDtoRequest, NewsDtoResponse, Long> newsController) {
+    public GetAuthorByNewsIdCommand(BaseController<NewsDtoRequest, NewsDtoResponse, Long> newsController) {
         this.newsController = newsController;
         this.scanner = new Scanner(System.in);
     }
 
     @Override
     public void execute() {
-        System.out.println(OPERATION.getText() + MenuOptions.REMOVE_NEWS_BY_ID.getOptionName());
+        System.out.println(OPERATION.getText() + MenuOptions.GET_AUTHOR_BY_NEWS_ID.getOptionName());
         Validator validator = new Validator();
         try {
             System.out.println(ENTER_NEWS_ID);
@@ -37,7 +38,7 @@ public class RemoveNewsByIdCommand implements MenuCommands {
                 throw new ValidatorException(Errors.ERROR_NEWS_ID_FORMAT.getErrorData("", false));
             }
 
-            System.out.println(newsController.deleteById(Long.parseLong(newsId)));
+            System.out.println(((NewsController) newsController).getAuthorByNewsId(Long.parseLong(newsId)));
         } catch (ValidatorException | NotFoundException e) {
             System.out.println(e.getMessage());
         }

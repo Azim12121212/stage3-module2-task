@@ -8,6 +8,8 @@ public enum MenuInputTexts {
     ENTER_NEWS_AUTHOR_ID("Enter news' author id:"),
     ENTER_AUTHOR_ID("Enter author id:"),
     ENTER_AUTHOR_NAME("Enter author name:"),
+    ENTER_TAG_ID("Enter tag id:"),
+    ENTER_TAG_NAME("Enter tag name:"),
     OPERATION("Operation: ");
 
     private String text;

@@ -13,7 +13,11 @@ public enum Errors {
     ERROR_AUTHOR_ID_FORMAT("0041", "Author Id should be number"),
     ERROR_AUTHOR_ID_VALUE("0042", "Author id can not be null or less than 1. News id is: "),
     ERROR_AUTHOR_ID_NOT_EXIST("0043", "Author with id {id} does not exist."),
-    ERROR_AUTHOR_NAME_LENGTH("0051", "Author name can not be less than 3 and more than 15 symbols. Author name is: ");
+    ERROR_AUTHOR_NAME_LENGTH("0051", "Author name can not be less than 3 and more than 15 symbols. Author name is: "),
+    ERROR_TAG_ID_FORMAT("0061", "Tag Id should be number"),
+    ERROR_TAG_ID_VALUE("0062", "Tag id can not be null or less than 1. Tag id is: "),
+    ERROR_TAG_ID_NOT_EXIST("0063", "Tag with id {id} does not exist."),
+    ERROR_TAG_NAME_LENGTH("0071", "Tag name can not be less than 3 and more than 15 symbols. Tag name is: ");
 
     private String errorCode;
     private String errorMessage;

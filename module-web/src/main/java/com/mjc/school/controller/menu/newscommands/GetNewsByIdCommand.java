@@ -30,7 +30,7 @@ public class GetNewsByIdCommand implements MenuCommands {
         System.out.println(OPERATION.getText() + MenuOptions.GET_NEWS_BY_ID.getOptionName());
         Validator validator = new Validator();
         try {
-            System.out.println(ENTER_NEWS_ID.getText());
+            System.out.println(ENTER_NEWS_ID);
             String newsId = scanner.nextLine();
             if (!validator.validateId(newsId)) {
                 throw new ValidatorException(Errors.ERROR_NEWS_ID_FORMAT.getErrorData("", false));

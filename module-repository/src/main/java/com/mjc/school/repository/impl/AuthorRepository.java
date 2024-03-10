@@ -1,86 +1,84 @@
 package com.mjc.school.repository.impl;
 
 import com.mjc.school.repository.BaseRepository;
-import com.mjc.school.repository.annotation.OnDelete;
-import com.mjc.school.repository.datasource.DataSource;
 import com.mjc.school.repository.model.AuthorModel;
+import com.mjc.school.repository.model.NewsModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
 public class AuthorRepository implements BaseRepository<AuthorModel, Long> {
     private final DateTimeFormatter MY_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-    private final DataSource dataSource;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
-    public AuthorRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public AuthorRepository() {
     }
+
     @Override
     public List<AuthorModel> readAll() {
-        return dataSource.getAuthorList();
+        return entityManager.createQuery("SELECT a FROM AuthorModel a", AuthorModel.class).getResultList();
     }
 
     @Override
     public Optional<AuthorModel> readById(Long id) {
-        return Optional.of(readAll()
-                .stream()
-                .filter(authorModel -> id.equals(authorModel.getId()))
-                .findFirst())
-                .orElse(null);
+        return Optional.of(entityManager.find(AuthorModel.class, id));
     }
 
+    @Transactional
     @Override
     public AuthorModel create(AuthorModel entity) {
-        Long id = 1L;
-        if (!readAll().isEmpty()) {
-            id = readAll().get(readAll().size()-1).getId() + 1;
-        }
         LocalDateTime dateTime = LocalDateTime.parse(LocalDateTime.now().format(MY_FORMAT));
-        entity.setId(id);
         entity.setCreateDate(dateTime);
         entity.setLastUpdateDate(dateTime);
-        readAll().add(entity);
+        entityManager.persist(entity);
         return entity;
     }
 
+    @Transactional
     @Override
     public AuthorModel update(AuthorModel entity) {
         LocalDateTime dateTime = LocalDateTime.parse(LocalDateTime.now().format(MY_FORMAT));
-
-        int index = -1;
-        for (AuthorModel authorModel: readAll()) {
-            if (Objects.equals(entity.getId(), authorModel.getId())) {
-                index = readAll().indexOf(authorModel);
-            }
+        AuthorModel authorModel = null;
+        if (existById(entity.getId())) {
+            authorModel = entityManager.find(AuthorModel.class, entity.getId());
+            authorModel.setName(entity.getName());
+            authorModel.setLastUpdateDate(dateTime);
+            entityManager.merge(authorModel);
         }
-
-        if (index>=0) {
-            readAll().get(index).setName(entity.getName());
-            readAll().get(index).setLastUpdateDate(dateTime);
-            return readAll().get(index);
-        }
-        return null;
+        return authorModel;
     }
 
-    @OnDelete
+    @Transactional
     @Override
     public boolean deleteById(Long id) {
-        return readById(id)
-                .map(authorModel -> readAll().remove(authorModel))
-                .orElse(false);
+        if (existById(id)) {
+            entityManager.remove(entityManager.find(AuthorModel.class, id));
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean existById(Long id) {
-        return readAll()
-                .stream()
-                .anyMatch(authorModel -> id.equals(authorModel.getId()));
+        return entityManager.getReference(AuthorModel.class, id)!=null;
+    }
+
+    // Get News by author name
+    public List<NewsModel> getNewsByAuthorName(String name) {
+        AuthorModel authorModel = (AuthorModel) entityManager
+                .createQuery("SELECT a FROM AuthorModel a WHERE a.name = ?1")
+                .setParameter(1, name).getSingleResult();
+        return authorModel.getNewsModelList();
     }
 }

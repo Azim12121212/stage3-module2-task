@@ -1,9 +1,14 @@
 package com.mjc.school.controller.impl;
 
 import com.mjc.school.controller.BaseController;
+import com.mjc.school.controller.annotation.CommandBody;
+import com.mjc.school.controller.annotation.CommandHandler;
+import com.mjc.school.controller.annotation.CommandParam;
 import com.mjc.school.service.BaseService;
 import com.mjc.school.service.dto.AuthorDtoRequest;
 import com.mjc.school.service.dto.AuthorDtoResponse;
+import com.mjc.school.service.dto.NewsDtoResponse;
+import com.mjc.school.service.impl.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -41,5 +46,10 @@ public class AuthorController implements BaseController<AuthorDtoRequest, Author
     @Override
     public boolean deleteById(Long id) {
         return authorService.deleteById(id);
+    }
+
+    // Get News by author name
+    public List<NewsDtoResponse> getNewsByAuthorName(String name) {
+        return ((AuthorService) authorService).getNewsByAuthorName(name);
     }
 }

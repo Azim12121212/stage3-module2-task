@@ -1,20 +1,23 @@
 package com.mjc.school.service.impl;
 
 import com.mjc.school.repository.BaseRepository;
+import com.mjc.school.repository.impl.AuthorRepository;
 import com.mjc.school.repository.model.AuthorModel;
+import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.service.BaseService;
 import com.mjc.school.service.annotation.ValidatingAuthor;
 import com.mjc.school.service.annotation.ValidatingAuthorId;
 import com.mjc.school.service.dto.AuthorDtoRequest;
 import com.mjc.school.service.dto.AuthorDtoResponse;
+import com.mjc.school.service.dto.NewsDtoResponse;
 import com.mjc.school.service.errorsexceptions.Errors;
 import com.mjc.school.service.errorsexceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class AuthorService implements BaseService<AuthorDtoRequest, AuthorDtoResponse, Long> {
     private final BaseRepository<AuthorModel, Long> authorRepository;
 
@@ -25,7 +28,7 @@ public class AuthorService implements BaseService<AuthorDtoRequest, AuthorDtoRes
 
     @Override
     public List<AuthorDtoResponse> readAll() {
-        return MyMapper.INSTANCE.authorModelListToauthorDtoList(authorRepository.readAll());
+        return MyMapper.INSTANCE.authorModelListToAuthorDtoList(authorRepository.readAll());
     }
 
     @ValidatingAuthorId
@@ -61,5 +64,11 @@ public class AuthorService implements BaseService<AuthorDtoRequest, AuthorDtoRes
         } else {
             return false;
         }
+    }
+
+    // Get News by author name
+    public List<NewsDtoResponse> getNewsByAuthorName(String name) {
+        List<NewsModel> newsModelList = ((AuthorRepository) authorRepository).getNewsByAuthorName(name);
+        return MyMapper.INSTANCE.newsModelListToNewsDtoList(newsModelList);
     }
 }

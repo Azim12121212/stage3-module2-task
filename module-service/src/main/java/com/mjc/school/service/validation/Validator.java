@@ -2,6 +2,7 @@ package com.mjc.school.service.validation;
 
 import com.mjc.school.service.dto.AuthorDtoRequest;
 import com.mjc.school.service.dto.NewsDtoRequest;
+import com.mjc.school.service.dto.TagDtoRequest;
 import com.mjc.school.service.errorsexceptions.Errors;
 import com.mjc.school.service.errorsexceptions.ValidatorException;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ public class Validator {
     private static final int NEWS_CONTENT_MAX = 255;
     private static final int AUTHOR_NAME_MIN = 3;
     private static final int AUTHOR_NAME_MAX = 15;
+    private static final int TAG_NAME_MIN = 3;
+    private static final int TAG_NAME_MAX = 15;
 
     public void validateNewsDtoRequest(NewsDtoRequest newsDtoRequest) {
         validateNewsTitle(newsDtoRequest.getTitle());
@@ -24,6 +27,10 @@ public class Validator {
 
     public void validateAuthorDtoRequest(AuthorDtoRequest authorDtoRequest) {
         validateAuthorName(authorDtoRequest.getName());
+    }
+
+    public void validateTagDtoRequest(TagDtoRequest tagDtoRequest) {
+        validateTagName(tagDtoRequest.getName());
     }
 
     public void validateNewsId(Long newsId) {
@@ -59,6 +66,18 @@ public class Validator {
     private void validateAuthorName(String name) {
         if (name.length()<AUTHOR_NAME_MIN || name.length()>AUTHOR_NAME_MAX) {
             throw new ValidatorException(Errors.ERROR_AUTHOR_NAME_LENGTH.getErrorData(name, false));
+        }
+    }
+
+    public void validateTagId(Long tagId) {
+        if (tagId==null || tagId<1) {
+            throw new ValidatorException(Errors.ERROR_TAG_ID_VALUE.getErrorData(String.valueOf(tagId), false));
+        }
+    }
+
+    private void validateTagName(String name) {
+        if (name.length()<TAG_NAME_MIN || name.length()>TAG_NAME_MAX) {
+            throw new ValidatorException(Errors.ERROR_TAG_NAME_LENGTH.getErrorData(name, false));
         }
     }
 

@@ -2,6 +2,7 @@ package com.mjc.school.service.dto;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 public class NewsDtoResponse {
     private Long id;
@@ -9,24 +10,28 @@ public class NewsDtoResponse {
     private String content;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
-    private Long authorId;
+    private AuthorDtoResponse authorDtoResponse;
+    private Set<TagDtoResponse> tagDtoResponseSet;
 
     public NewsDtoResponse() {
     }
 
-    public NewsDtoResponse(String title, String content, Long authorId) {
+    public NewsDtoResponse(String title, String content, AuthorDtoResponse authorDtoResponse) {
         this.title = title;
         this.content = content;
-        this.authorId = authorId;
+        this.authorDtoResponse = authorDtoResponse;
     }
 
-    public NewsDtoResponse(Long id, String title, String content, LocalDateTime createDate, LocalDateTime lastUpdateDate, Long authorId) {
+    public NewsDtoResponse(Long id, String title, String content,
+                           LocalDateTime createDate, LocalDateTime lastUpdateDate,
+                           AuthorDtoResponse authorDtoResponse, Set<TagDtoResponse> tagDtoResponseSet) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
-        this.authorId = authorId;
+        this.authorDtoResponse = authorDtoResponse;
+        this.tagDtoResponseSet = tagDtoResponseSet;
     }
 
     public Long getId() {
@@ -69,12 +74,20 @@ public class NewsDtoResponse {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public Long getAuthorId() {
-        return authorId;
+    public AuthorDtoResponse getAuthorDtoResponse() {
+        return authorDtoResponse;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthorDtoResponse(AuthorDtoResponse authorDtoResponse) {
+        this.authorDtoResponse = authorDtoResponse;
+    }
+
+    public Set<TagDtoResponse> getTagDtoResponseSet() {
+        return tagDtoResponseSet;
+    }
+
+    public void setTagDtoResponseSet(Set<TagDtoResponse> tagDtoResponseSet) {
+        this.tagDtoResponseSet = tagDtoResponseSet;
     }
 
     @Override
@@ -82,12 +95,12 @@ public class NewsDtoResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NewsDtoResponse that = (NewsDtoResponse) o;
-        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(createDate, that.createDate) && Objects.equals(lastUpdateDate, that.lastUpdateDate) && Objects.equals(authorId, that.authorId);
+        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(createDate, that.createDate) && Objects.equals(lastUpdateDate, that.lastUpdateDate) && Objects.equals(authorDtoResponse, that.authorDtoResponse) && Objects.equals(tagDtoResponseSet, that.tagDtoResponseSet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, content, createDate, lastUpdateDate, authorId);
+        return Objects.hash(id, title, content, createDate, lastUpdateDate, authorDtoResponse, tagDtoResponseSet);
     }
 
     @Override
@@ -98,7 +111,8 @@ public class NewsDtoResponse {
                 ", content='" + content + '\'' +
                 ", createDate=" + createDate +
                 ", lastUpdateDate=" + lastUpdateDate +
-                ", authorId=" + authorId +
+                ", authorDtoResponse=" + authorDtoResponse +
+                ", tagDtoResponseSet=" + tagDtoResponseSet +
                 '}';
     }
 }
