@@ -1,31 +1,16 @@
 package com.mjc.school.repository.model;
 
+import org.springframework.stereotype.Component;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "author")
+@Component
 public class AuthorModel implements BaseEntity<Long> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
     private Long id;
-    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "createdate", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createDate;
-    @Column(name = "lastupdatedate", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime lastUpdateDate;
-    @OneToMany(mappedBy = "authorModel", cascade = CascadeType.REMOVE)
-    private List<NewsModel> newsModelList = new ArrayList<>();
 
     public AuthorModel() {
     }
@@ -71,14 +56,6 @@ public class AuthorModel implements BaseEntity<Long> {
 
     public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
-    }
-
-    public List<NewsModel> getNewsModelList() {
-        return newsModelList;
-    }
-
-    public void setNewsModelList(List<NewsModel> newsModelList) {
-        this.newsModelList = newsModelList;
     }
 
     @Override

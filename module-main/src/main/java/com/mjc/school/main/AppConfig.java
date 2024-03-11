@@ -1,14 +1,11 @@
-package com.mjc.school.main.configuration;
+package com.mjc.school.main;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-
 @Configuration
-@ComponentScan({"com.mjc.school.*"})
+@ComponentScan("com.mjc.school.*")
 @EnableAspectJAutoProxy
-@EntityScan(basePackages = {"com.mjc.school.repository.model"})
 public class AppConfig {
 }

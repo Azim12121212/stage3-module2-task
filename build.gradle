@@ -21,29 +21,16 @@ subprojects {
     dependencies {
         implementation "org.springframework:spring-context:$springVersion"
 
-        implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-        implementation "org.springframework.boot:spring-boot-starter-data-jpa:2.7.7"
-
         testImplementation "org.springframework:spring-test:$springVersion"
         testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
-
-        testImplementation "com.tngtech.archunit:archunit-junit5:1.0.0"
+        testImplementation "com.tngtech.archunit:archunit:$archUnitVersion"
 
         annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
         implementation "org.mapstruct:mapstruct:$mapstructVersion"
 
         implementation "org.aspectj:aspectjrt:1.9.7"
         implementation "org.aspectj:aspectjweaver:1.9.7"
-
-        // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
-        //implementation 'org.hibernate:hibernate-core:5.4.32.Final'
-        // https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
-        //implementation 'org.hibernate:hibernate-entitymanager:5.4.32.Final'
-        // https://mvnrepository.com/artifact/org.postgresql/postgresql
-        implementation 'org.postgresql:postgresql:42.7.2'
-
-        implementation 'javax.xml.bind:jaxb-api:2.3.1'
     }
     test {
         useJUnitPlatform()

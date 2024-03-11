@@ -2,7 +2,6 @@ package com.mjc.school.service.aspects;
 
 import com.mjc.school.service.dto.AuthorDtoRequest;
 import com.mjc.school.service.dto.NewsDtoRequest;
-import com.mjc.school.service.dto.TagDtoRequest;
 import com.mjc.school.service.validation.Validator;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -29,11 +28,6 @@ public class ValidatingAspect {
         validator.validateAuthorDtoRequest(authorDtoRequest);
     }
 
-    @Before("@annotation(com.mjc.school.service.annotation.ValidatingTag) && args(tagDtoRequest)")
-    public void validateTagDtoRequest(TagDtoRequest tagDtoRequest) {
-        validator.validateTagDtoRequest(tagDtoRequest);
-    }
-
     @Before("@annotation(com.mjc.school.service.annotation.ValidatingNewsId) && args(id)")
     public void validateNewsDtoId(Long id) {
         validator.validateNewsId(id);
@@ -42,10 +36,5 @@ public class ValidatingAspect {
     @Before("@annotation(com.mjc.school.service.annotation.ValidatingAuthorId) && args(id)")
     public void validateAuthorDtoId(Long id) {
         validator.validateAuthorId(id);
-    }
-
-    @Before("@annotation(com.mjc.school.service.annotation.ValidatingTagId) && args(id)")
-    public void validateTagDtoId(Long id) {
-        validator.validateTagId(id);
     }
 }

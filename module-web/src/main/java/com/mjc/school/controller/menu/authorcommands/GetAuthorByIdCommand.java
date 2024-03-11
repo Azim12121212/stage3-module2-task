@@ -30,13 +30,13 @@ public class GetAuthorByIdCommand implements MenuCommands {
         System.out.println(OPERATION.getText() + MenuOptions.GET_AUTHOR_BY_ID.getOptionName());
         Validator validator = new Validator();
         try {
-            System.out.println(ENTER_AUTHOR_ID);
-            String id = scanner.nextLine();
-            if (!validator.validateId(id)) {
+            System.out.println(ENTER_AUTHOR_ID.getText());
+            String newsId = scanner.nextLine();
+            if (!validator.validateId(newsId)) {
                 throw new ValidatorException(Errors.ERROR_AUTHOR_ID_FORMAT.getErrorData("", false));
             }
 
-            System.out.println(authorController.readById(Long.parseLong(id)));
+            System.out.println(authorController.readById(Long.parseLong(newsId)));
         } catch (ValidatorException | NotFoundException e) {
             System.out.println(e.getMessage());
         }
